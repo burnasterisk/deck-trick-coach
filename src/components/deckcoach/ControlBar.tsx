@@ -28,21 +28,22 @@ export function ControlBar({
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center px-safe pb-safe">
       <nav
         aria-label="Session controls"
-        className="pointer-events-auto hud-glass w-full max-w-5xl animate-float-in rounded-3xl p-2 lg:flex lg:items-center lg:gap-2 lg:rounded-full"
+        className="pointer-events-auto griptape w-full max-w-5xl animate-slap p-2 lg:flex lg:items-center lg:gap-3"
       >
         <div className="min-w-0 lg:flex-1">
           <TrickSelector value={trick} onChange={onTrickChange} />
         </div>
 
-        <div className="mx-1 my-2 h-px bg-hud-border lg:my-0 lg:h-7 lg:w-px" />
+        {/* Spray-painted divider */}
+        <div className="mx-2 my-1 h-0.5 rotate-[-0.5deg] bg-primary/40 blur-[0.5px] lg:my-0 lg:h-8 lg:w-0.5 lg:rotate-0" />
 
-        <div className="grid grid-cols-2 gap-1.5 lg:flex lg:shrink-0">
+        <div className="grid grid-cols-2 gap-3 px-1 pt-1 pb-1.5 lg:flex lg:shrink-0">
           <Button
-            variant={calibration === "locked" ? "chip-active" : "volt"}
+            variant={calibration === "locked" ? "slab" : "hazard"}
             size="pill"
             onClick={onCalibrate}
             disabled={calibration === "scanning"}
-            className="font-display tracking-wide"
+            className="-rotate-1 font-marker"
           >
             {calibration === "scanning" ? (
               <Loader2 className="animate-spin" />
@@ -58,32 +59,30 @@ export function ControlBar({
                 : "Calibrate Surface"}
           </Button>
 
-          <Button
-            variant={stanceGuide ? "chip-active" : "chip"}
-            size="pill"
-            aria-pressed={stanceGuide}
-            onClick={() => onStanceGuideChange(!stanceGuide)}
-            className="font-display tracking-wide"
-          >
-            <Footprints />
-            Stance Guide
-            <span
-              aria-hidden
-              className={
-                stanceGuide
-                  ? "relative ml-1 inline-block h-4 w-7 shrink-0 rounded-full bg-primary transition-colors"
-                  : "relative ml-1 inline-block h-4 w-7 shrink-0 rounded-full bg-muted transition-colors"
-              }
+          <div className="drop-hard">
+            <Button
+              variant={stanceGuide ? "tape-hot" : "tape"}
+              size="pill"
+              aria-pressed={stanceGuide}
+              onClick={() => onStanceGuideChange(!stanceGuide)}
+              className="w-full rotate-1"
             >
+              <Footprints />
+              Stance Guide
               <span
-                className={
-                  stanceGuide
-                    ? "absolute top-0.5 left-3.5 size-3 rounded-full bg-primary-foreground transition-all"
-                    : "absolute top-0.5 left-0.5 size-3 rounded-full bg-muted-foreground transition-all"
-                }
-              />
-            </span>
-          </Button>
+                aria-hidden
+                className="relative ml-1 inline-block h-4 w-8 shrink-0 border-2 border-ink bg-ink"
+              >
+                <span
+                  className={
+                    stanceGuide
+                      ? "absolute top-0 left-4 size-3 bg-hazard transition-all"
+                      : "absolute top-0 left-0 size-3 bg-tape transition-all"
+                  }
+                />
+              </span>
+            </Button>
+          </div>
         </div>
       </nav>
     </div>

@@ -9,22 +9,25 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * DeckCoach design system — dark-only "night session" HUD.
- * Graphite surfaces, volt-lime signal color, signal-orange for alerts/recording.
+ * DeckCoach design system — 90s/2000s skate-punk street HUD.
+ * Asphalt black, raw concrete, acid-yellow spray paint, hazard orange, torn-paper off-white.
+ * Surfaces: grip tape (dark + light specks), duct tape (silver, torn ends), stickers
+ * (die-cut paper border, irregular corners), wheatpaste posters (torn paper). Hard 4px ink shadows.
  */
 
 @theme inline {
-  --font-display: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Rubik Dirt", "Permanent Marker", system-ui, sans-serif;
+  --font-marker: "Permanent Marker", "Rubik Dirt", system-ui, sans-serif;
+  --font-sans: "Space Mono", ui-monospace, monospace;
+  --font-mono: "Space Mono", ui-monospace, monospace;
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  --radius-2xl: calc(var(--radius) + 6px);
+  --radius-3xl: calc(var(--radius) + 8px);
+  --radius-4xl: calc(var(--radius) + 10px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -33,23 +36,27 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary-glow: var(--primary-glow);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-signal: var(--signal);
-  --color-signal-foreground: var(--signal-foreground);
+  --color-hazard: var(--hazard);
+  --color-hazard-foreground: var(--hazard-foreground);
+  --color-paper: var(--paper);
+  --color-paper-foreground: var(--paper-foreground);
+  --color-concrete: var(--concrete);
+  --color-tape: var(--tape);
+  --color-tape-foreground: var(--tape-foreground);
+  --color-asphalt: var(--asphalt);
+  --color-ink: var(--ink);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
-  --color-hud: var(--hud);
-  --color-hud-border: var(--hud-border);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -65,60 +72,69 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --animate-scan: scan 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-  --animate-pulse-dot: pulse-dot 1.6s ease-in-out infinite;
-  --animate-float-in: float-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pulse-dot: pulse-dot 1s steps(2, jump-none) infinite;
+  --animate-slap: slap 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   --animate-dash: dash 1.4s linear infinite;
 }
 
 :root {
-  --radius: 0.875rem;
-  --background: oklch(0.12 0.008 250);
-  --foreground: oklch(0.96 0.005 250);
-  --card: oklch(0.17 0.01 250);
-  --card-foreground: oklch(0.96 0.005 250);
-  --popover: oklch(0.17 0.01 250);
-  --popover-foreground: oklch(0.96 0.005 250);
-  --primary: oklch(0.9 0.2 128);
-  --primary-glow: oklch(0.94 0.22 118);
-  --primary-foreground: oklch(0.16 0.03 130);
-  --secondary: oklch(0.23 0.012 250);
-  --secondary-foreground: oklch(0.94 0.005 250);
-  --muted: oklch(0.22 0.01 250);
-  --muted-foreground: oklch(0.68 0.015 250);
-  --accent: oklch(0.27 0.014 250);
-  --accent-foreground: oklch(0.97 0.005 250);
-  --signal: oklch(0.72 0.19 45);
-  --signal-foreground: oklch(0.15 0.02 45);
-  --destructive: oklch(0.65 0.21 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.9 0.2 128 / 60%);
+  --radius: 0.25rem;
 
-  --hud: oklch(0.14 0.01 250 / 62%);
-  --hud-border: oklch(1 0 0 / 12%);
-  --gradient-volt: linear-gradient(135deg, var(--primary), var(--primary-glow));
+  /* Raw palette */
+  --asphalt: oklch(0.164 0 0); /* #0E0E0E sun-bleached asphalt */
+  --ink: oklch(0 0 0);
+  --concrete: oklch(0.356 0.005 91.5); /* raw concrete, dark */
+  --tape: oklch(0.72 0.011 92); /* silver duct tape */
+  --tape-foreground: oklch(0.164 0 0);
+  --paper: oklch(0.953 0.009 84.6); /* #F2EFE9 torn paper */
+  --paper-foreground: oklch(0.164 0 0);
+  --hazard: oklch(0.668 0.224 37); /* #FF4D00 */
+  --hazard-foreground: oklch(0.164 0 0);
+
+  --background: var(--asphalt);
+  --foreground: var(--paper);
+  --card: oklch(0.217 0.002 106.6);
+  --card-foreground: var(--paper);
+  --popover: oklch(0.217 0.002 106.6);
+  --popover-foreground: var(--paper);
+  --primary: oklch(0.948 0.219 117); /* #E5FF00 acid yellow */
+  --primary-foreground: var(--asphalt);
+  --secondary: oklch(0.288 0.004 106.6);
+  --secondary-foreground: var(--paper);
+  --muted: oklch(0.217 0.002 106.6);
+  --muted-foreground: oklch(0.686 0.01 93.6);
+  --accent: var(--concrete);
+  --accent-foreground: var(--paper);
+  --destructive: var(--hazard);
+  --destructive-foreground: var(--asphalt);
+  --border: oklch(0.953 0.009 84.6 / 18%);
+  --input: oklch(0.953 0.009 84.6 / 22%);
+  --ring: var(--primary);
+
+  --shadow-hard: 4px 4px 0 0 var(--ink);
+  --shadow-hard-sm: 2px 2px 0 0 var(--ink);
+  --noise-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --noise-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -3 1.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --mask-stamp: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -7 4.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
   --gradient-vignette: radial-gradient(
-    ellipse at center,
-    transparent 55%,
-    oklch(0.08 0.01 250 / 75%) 100%
+    ellipse 75% 70% at center,
+    transparent 50%,
+    oklch(0 0 0 / 82%) 100%
   );
-  --shadow-hud: 0 18px 50px -12px oklch(0 0 0 / 70%), inset 0 1px 0 oklch(1 0 0 / 8%);
-  --shadow-volt: 0 0 0 1px oklch(0.9 0.2 128 / 40%), 0 8px 28px -6px oklch(0.9 0.2 128 / 45%);
 
-  --chart-1: oklch(0.9 0.2 128);
-  --chart-2: oklch(0.72 0.19 45);
-  --chart-3: oklch(0.7 0.14 220);
-  --chart-4: oklch(0.8 0.15 85);
-  --chart-5: oklch(0.65 0.2 0);
-  --sidebar: oklch(0.15 0.01 250);
-  --sidebar-foreground: oklch(0.96 0.005 250);
-  --sidebar-primary: oklch(0.9 0.2 128);
-  --sidebar-primary-foreground: oklch(0.16 0.03 130);
-  --sidebar-accent: oklch(0.23 0.012 250);
-  --sidebar-accent-foreground: oklch(0.96 0.005 250);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.9 0.2 128 / 60%);
+  --chart-1: var(--primary);
+  --chart-2: var(--hazard);
+  --chart-3: var(--tape);
+  --chart-4: var(--paper);
+  --chart-5: var(--concrete);
+  --sidebar: var(--asphalt);
+  --sidebar-foreground: var(--paper);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--asphalt);
+  --sidebar-accent: var(--concrete);
+  --sidebar-accent-foreground: var(--paper);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--primary);
 }
 
 @layer base {
@@ -145,30 +161,11 @@
   height: 100dvh;
 }
 
-@utility hud-glass {
-  background: var(--hud);
-  border: 1px solid var(--hud-border);
-  box-shadow: var(--shadow-hud);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  backdrop-filter: blur(18px) saturate(140%);
-}
-
-@utility shadow-volt {
-  box-shadow: var(--shadow-volt);
-}
-
-@utility bg-volt {
-  background-image: var(--gradient-volt);
-}
-
-@utility bg-vignette {
-  background-image: var(--gradient-vignette);
-}
-
 @utility hud-label {
   font-family: var(--font-mono);
   font-size: 0.625rem;
-  letter-spacing: 0.16em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -192,12 +189,135 @@
   }
 }
 
-/* Perspective floor grid shown once the surface is calibrated. */
+/* ---------- Textures ---------- */
+
+/* Dark speckle over a background color (paper, tape, stickers). */
+@utility grain {
+  background-image: var(--noise-dark);
+  background-size: 180px 180px;
+}
+
+/* Light speckle: grip tape / sprayed concrete. */
+@utility grain-light {
+  background-image: var(--noise-light);
+  background-size: 180px 180px;
+}
+
+@utility bg-vignette {
+  background-image: var(--gradient-vignette);
+}
+
+/* VX1000 flip-out LCD: faint horizontal scanlines. */
+@utility vx-lcd {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    oklch(0 0 0 / 22%) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+/* Hand-stamped ink: punches random holes through whatever it is applied to. */
+@utility stamp {
+  -webkit-mask-image: var(--mask-stamp);
+  mask-image: var(--mask-stamp);
+  -webkit-mask-size: 140px 140px;
+  mask-size: 140px 140px;
+}
+
+/* ---------- Shapes & shadows ---------- */
+
+@utility hard-shadow {
+  box-shadow: var(--shadow-hard);
+}
+
+@utility hard-shadow-sm {
+  box-shadow: var(--shadow-hard-sm);
+}
+
+/* Hard shadow that follows clip-paths of children (torn tape, torn paper). */
+@utility drop-hard {
+  filter: drop-shadow(4px 4px 0 var(--ink));
+}
+
+@utility drop-hard-sm {
+  filter: drop-shadow(2px 2px 0 var(--ink));
+}
+
+/* Slapped sticker: uneven die-cut corners. */
+@utility sticker-edge {
+  border-radius: 6px 16px 5px 13px / 13px 5px 16px 6px;
+}
+
+/* Duct tape with ragged torn ends. */
+@utility torn-tape {
+  clip-path: polygon(
+    3% 0, 97% 0, 100% 14%, 96.5% 29%, 100% 46%, 97% 62%, 100% 80%, 97.5% 100%,
+    2.5% 100%, 0 84%, 3.5% 67%, 0 50%, 3% 33%, 0 16%
+  );
+}
+
+/* Wheatpaste poster with torn top and bottom edges. */
+@utility torn-paper {
+  clip-path: polygon(
+    0 2%, 6% 0.4%, 12% 2.6%, 19% 0.8%, 27% 2.2%, 35% 0, 44% 1.8%, 52% 0.4%, 61% 2.6%,
+    70% 0.8%, 78% 2.2%, 86% 0, 94% 1.8%, 100% 0.8%, 99.2% 30%, 100% 62%, 99.4% 98%,
+    92% 100%, 84% 97.6%, 75% 99.6%, 66% 97.2%, 57% 100%, 48% 98%, 39% 100%, 30% 97.6%,
+    21% 99.6%, 12% 97.2%, 5% 100%, 0 98%, 0.8% 62%, 0 30%
+  );
+}
+
+/* Alternate tilt for a row of slapped-on pieces. */
+@utility tilt-alt {
+  &:nth-child(odd) {
+    rotate: -1.6deg;
+  }
+  &:nth-child(even) {
+    rotate: 1.3deg;
+  }
+  &:nth-child(3n) {
+    rotate: -0.5deg;
+  }
+}
+
+/* Physical press: piece gets pushed into its shadow. */
+@utility press {
+  transition:
+    translate 80ms ease-out,
+    box-shadow 80ms ease-out,
+    background-color 120ms;
+  &:active {
+    translate: 2px 2px;
+  }
+}
+
+/* Grip-tape panel: the floating control bar. */
+@utility griptape {
+  background-color: var(--asphalt);
+  background-image: var(--noise-light);
+  background-size: 180px 180px;
+  border: 2px solid var(--ink);
+  border-radius: 10px 18px 8px 16px / 16px 8px 18px 10px;
+  box-shadow: var(--shadow-hard), inset 0 0 0 1px oklch(0.953 0.009 84.6 / 8%);
+}
+
+/* Piece of tape holding a poster to the wall. */
+@utility tape-tab {
+  position: absolute;
+  height: 1.25rem;
+  width: 4.5rem;
+  background-color: oklch(0.72 0.011 92 / 85%);
+  background-image: var(--noise-dark);
+  background-size: 180px 180px;
+  clip-path: polygon(4% 0, 96% 0, 100% 30%, 96% 60%, 100% 100%, 0 100%, 4% 65%, 0 35%);
+}
+
+/* Spray-painted floor grid shown once the surface is calibrated. */
 @utility surface-grid {
   background-image:
-    linear-gradient(to right, oklch(0.9 0.2 128 / 45%) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(0.9 0.2 128 / 45%) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(to right, oklch(0.948 0.219 117 / 55%) 2px, transparent 2px),
+    linear-gradient(to bottom, oklch(0.948 0.219 117 / 55%) 2px, transparent 2px);
+  background-size: 56px 56px;
+  filter: blur(0.6px);
   transform: perspective(520px) rotateX(62deg);
   transform-origin: center bottom;
   mask-image: linear-gradient(to top, black 20%, transparent 95%);
@@ -224,22 +344,20 @@
   0%,
   100% {
     opacity: 1;
-    transform: scale(1);
   }
   50% {
-    opacity: 0.35;
-    transform: scale(0.8);
+    opacity: 0;
   }
 }
 
-@keyframes float-in {
+@keyframes slap {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.98);
+    transform: scale(1.12) rotate(-4deg);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1) rotate(0);
   }
 }
 

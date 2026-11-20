@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#0d0f12" },
+      { name: "theme-color", content: "#0E0E0E" },
       { title: "DeckCoach" },
       { name: "description", content: "Fingerboard training camera and coach." },
       { name: "author", content: "DeckCoach" },
@@ -99,7 +99,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik+Dirt&family=Space+Mono:wght@400;700&display=swap",
       },
     ],
   }),

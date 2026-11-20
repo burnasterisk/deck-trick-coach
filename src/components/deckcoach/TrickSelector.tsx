@@ -11,7 +11,7 @@ export function TrickSelector({ value, onChange }: TrickSelectorProps) {
     <div
       role="radiogroup"
       aria-label="Trick"
-      className="no-scrollbar -mx-1 flex snap-x gap-1.5 overflow-x-auto px-1"
+      className="no-scrollbar drop-hard -mx-1 flex snap-x gap-2 overflow-x-auto px-1.5 pt-1.5 pb-2"
     >
       {TRICKS.map((t) => {
         const active = t.id === value;
@@ -20,10 +20,10 @@ export function TrickSelector({ value, onChange }: TrickSelectorProps) {
             key={t.id}
             role="radio"
             aria-checked={active}
-            variant={active ? "chip-active" : "chip"}
+            variant={active ? "tape-hot" : "tape"}
             size="pill"
             onClick={() => onChange(t.id)}
-            className="shrink-0 snap-start font-display tracking-wide"
+            className="tilt-alt shrink-0 snap-start"
           >
             {t.name}
           </Button>
