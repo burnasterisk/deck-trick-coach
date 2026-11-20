@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Camera selection logic (mobile detection, default facing, constraints) lives as pure functions in `src/lib/camera.ts`, consumed by `src/hooks/use-camera.ts` — keeps it unit-testable without a browser.
+- Trick definitions (finger marks, motion arrows, cues) are data in `src/lib/tricks.ts`; UI components render from that data so adding a trick never touches components.
+- The app is dark-only: tokens live in `:root` of `src/styles.css` and `<html>` carries `dark`; no theme toggle.
