@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
 import { ControlBar, type CalibrationState } from "@/components/deckcoach/ControlBar";
+import { GhostDeck } from "@/components/deckcoach/GhostDeck";
 import { StanceGuide } from "@/components/deckcoach/StanceGuide";
 import { SurfaceOverlay } from "@/components/deckcoach/SurfaceOverlay";
 import { TopBar } from "@/components/deckcoach/TopBar";
@@ -37,6 +38,7 @@ function Index() {
   const [trickId, setTrickId] = useState<TrickId>(DEFAULT_TRICK);
   const [calibration, setCalibration] = useState<CalibrationState>("idle");
   const [stanceGuide, setStanceGuide] = useState(true);
+  const [ghostDeck, setGhostDeck] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const trick = getTrick(trickId);
 
@@ -61,6 +63,7 @@ function Index() {
         onRetry={camera.retry}
       />
       <SurfaceOverlay state={calibration} />
+      {ghostDeck && <GhostDeck />}
       {stanceGuide && <StanceGuide trick={trick} />}
       <TopBar
         status={camera.status}
@@ -76,6 +79,8 @@ function Index() {
         onCalibrate={calibrate}
         stanceGuide={stanceGuide}
         onStanceGuideChange={setStanceGuide}
+        ghostDeck={ghostDeck}
+        onGhostDeckChange={setGhostDeck}
       />
     </main>
   );
