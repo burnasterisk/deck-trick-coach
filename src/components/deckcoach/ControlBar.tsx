@@ -1,4 +1,4 @@
-import { Crosshair, Footprints, Ghost, Loader2, RotateCcw } from "lucide-react";
+import { Crosshair, Footprints, Ghost, Hand, Loader2, RotateCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import type { TrickId } from "@/lib/tricks";
@@ -16,6 +16,8 @@ interface ControlBarProps {
   onStanceGuideChange: (on: boolean) => void;
   ghostDeck: boolean;
   onGhostDeckChange: (on: boolean) => void;
+  tipTracking: boolean;
+  onTipTrackingChange: (on: boolean) => void;
 }
 
 export function ControlBar({
@@ -27,6 +29,8 @@ export function ControlBar({
   onStanceGuideChange,
   ghostDeck,
   onGhostDeckChange,
+  tipTracking,
+  onTipTrackingChange,
 }: ControlBarProps) {
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center px-safe pb-safe">
@@ -62,6 +66,31 @@ export function ControlBar({
                 ? "Recalibrate"
                 : "Calibrate Surface"}
           </Button>
+
+          <div className="drop-hard">
+            <Button
+              variant={tipTracking ? "tape-hot" : "tape"}
+              size="pill"
+              aria-pressed={tipTracking}
+              onClick={() => onTipTrackingChange(!tipTracking)}
+              className="w-full rotate-1"
+            >
+              <Hand />
+              Tip Track
+              <span
+                aria-hidden
+                className="relative ml-1 inline-block h-4 w-8 shrink-0 border-2 border-ink bg-ink"
+              >
+                <span
+                  className={
+                    tipTracking
+                      ? "absolute top-0 left-4 size-3 bg-hazard transition-all"
+                      : "absolute top-0 left-0 size-3 bg-tape transition-all"
+                  }
+                />
+              </span>
+            </Button>
+          </div>
 
           <div className="drop-hard">
             <Button

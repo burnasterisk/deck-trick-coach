@@ -2,12 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
 import { ControlBar, type CalibrationState } from "@/components/deckcoach/ControlBar";
+import { FingertipOverlay } from "@/components/deckcoach/FingertipOverlay";
 import { GhostDeck } from "@/components/deckcoach/GhostDeck";
 import { StanceGuide } from "@/components/deckcoach/StanceGuide";
 import { SurfaceOverlay } from "@/components/deckcoach/SurfaceOverlay";
 import { TopBar } from "@/components/deckcoach/TopBar";
 import { Viewfinder } from "@/components/deckcoach/Viewfinder";
 import { useCamera } from "@/hooks/use-camera";
+import { useHandTracking } from "@/hooks/use-hand-tracking";
 import { DEFAULT_TRICK, getTrick, type TrickId } from "@/lib/tricks";
 
 export const Route = createFileRoute("/")({
@@ -39,6 +41,8 @@ function Index() {
   const [calibration, setCalibration] = useState<CalibrationState>("idle");
   const [stanceGuide, setStanceGuide] = useState(true);
   const [ghostDeck, setGhostDeck] = useState(false);
+  const [tipTracking, setTipTracking] = useState(false);
+  const handTracking = useHandTracking(camera.videoRef, tipTracking, camera.status === "live");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const trick = getTrick(trickId);
 
@@ -63,6 +67,9 @@ function Index() {
         onRetry={camera.retry}
       />
       <SurfaceOverlay state={calibration} />
+      {tipTracking && (
+        <FingertipOverlay tips={handTracking.tips} mirrored={camera.info?.mirrored ?? false} />
+      )}
       {ghostDeck && <GhostDeck />}
       {stanceGuide && <StanceGuide trick={trick} />}
       <TopBar
@@ -81,6 +88,8 @@ function Index() {
         onStanceGuideChange={setStanceGuide}
         ghostDeck={ghostDeck}
         onGhostDeckChange={setGhostDeck}
+        tipTracking={tipTracking}
+        onTipTrackingChange={setTipTracking}
       />
     </main>
   );
