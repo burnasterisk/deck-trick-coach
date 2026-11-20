@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { buildVideoConstraints, detectMobile, flipFacing, getDefaultFacing } from "@/lib/camera";
-import { TRICKS } from "@/lib/tricks";
+import { getTricksByCategory, TRICK_CATEGORIES, TRICKS } from "@/lib/tricks";
 
 const IPHONE =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1";
@@ -27,13 +27,47 @@ describe("camera defaults", () => {
 });
 
 describe("trick selector", () => {
-  it("offers exactly the five requested tricks in order", () => {
-    expect(TRICKS.map((t) => t.name)).toEqual([
+  it("organizes all fingerboard tricks into 4 clean categories", () => {
+    expect(TRICK_CATEGORIES.map((c) => c.label)).toEqual([
+      "Basics",
+      "Flips",
+      "Scoops/Spins",
+      "Grinds/Slides",
+    ]);
+
+    expect(getTricksByCategory("basics").map((t) => t.name)).toEqual([
       "Ollie",
+      "Boned Ollie",
+      "Nollie",
+      "Fakie Ollie",
+      "Switch Ollie",
+    ]);
+    expect(getTricksByCategory("flips").map((t) => t.name)).toEqual([
       "Kickflip",
       "Heelflip",
-      "Pop Shuvit",
-      "Tre Flip",
+      "Varial Kickflip",
+      "Varial Heelflip",
+      "Hardflip",
+      "Inward Heelflip",
+      "Double Kickflip",
     ]);
+    expect(getTricksByCategory("spins").map((t) => t.name)).toEqual([
+      "Pop Shuvit",
+      "FS Shuvit",
+      "360 Shuvit",
+      "Tre Flip",
+      "Laser Flip",
+      "Bigspin",
+      "Gazelle Flip",
+      "Impossible",
+    ]);
+    expect(getTricksByCategory("grinds").map((t) => t.name)).toEqual([
+      "50-50 Grind",
+      "5-0 Grind",
+      "Boardslide",
+      "Smith Grind",
+      "Crooked Grind",
+    ]);
+    expect(TRICKS).toHaveLength(25);
   });
 });

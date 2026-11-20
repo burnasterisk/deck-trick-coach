@@ -1,6 +1,6 @@
 /*
  * Tailwind v4 entry: config lives here, with no tailwind.config.js or PostCSS plugin.
- * Keep every @import in this top block. Web fonts load via <link> in src/routes/__root.tsx.
+ * Keep every @import in this top block. Web fonts load via <link> in index.html.
  */
 @import "tailwindcss" source(none);
 @source "../src";
@@ -9,14 +9,13 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * DeckCoach design system — 90s/2000s skate-punk street HUD.
- * Asphalt black, raw concrete, acid-yellow spray paint, hazard orange, torn-paper off-white.
- * Surfaces: grip tape (dark + light specks), duct tape (silver, torn ends), stickers
- * (die-cut paper border, irregular corners), wheatpaste posters (torn paper). Hard 4px ink shadows.
+ * DeckCoach V3 design system — Y2K Cyber-Gothic Graffiti.
+ * Obsidian asphalt (#08080A), crimson (#DC2626), UV twilight purple (#8B5CF6),
+ * liquid chrome silver (#E4E4E7) and hazard-tape yellow (#FACC15) accents.
  */
 
 @theme inline {
-  --font-display: "Rubik Dirt", "Permanent Marker", system-ui, sans-serif;
+  --font-display: "Rubik Wet Paint", "Rubik Dirt", "Permanent Marker", system-ui, sans-serif;
   --font-marker: "Permanent Marker", "Rubik Dirt", system-ui, sans-serif;
   --font-sans: "Space Mono", ui-monospace, monospace;
   --font-mono: "Space Mono", ui-monospace, monospace;
@@ -42,6 +41,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-uv: var(--uv);
+  --color-chrome: var(--chrome);
   --color-hazard: var(--hazard);
   --color-hazard-foreground: var(--hazard-foreground);
   --color-paper: var(--paper);
@@ -74,64 +75,60 @@
   --animate-scan: scan 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   --animate-scan-tape: scan-tape 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   --animate-pulse-dot: pulse-dot 1s steps(2, jump-none) infinite;
-  --animate-slap: slap 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-slap: slap 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-dash: dash 1.4s linear infinite;
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0.375rem;
 
   /* Raw palette */
-  --asphalt: oklch(0.164 0 0); /* #0E0E0E sun-bleached asphalt */
+  --asphalt: #08080a; /* obsidian asphalt */
+  --uv: #8b5cf6; /* UV twilight purple */
+  --chrome: #e4e4e7; /* liquid chrome silver */
   --ink: oklch(0 0 0);
-  --concrete: oklch(0.356 0.005 91.5); /* raw concrete, dark */
-  --tape: oklch(0.72 0.011 92); /* silver duct tape */
-  --tape-foreground: oklch(0.164 0 0);
-  --paper: oklch(0.953 0.009 84.6); /* #F2EFE9 torn paper */
-  --paper-foreground: oklch(0.164 0 0);
-  --hazard: oklch(0.668 0.224 37); /* #FF4D00 */
-  --hazard-foreground: oklch(0.164 0 0);
+  --concrete: oklch(0.32 0.005 91.5);
+  --tape: oklch(0.74 0.01 92);
+  --tape-foreground: oklch(0.145 0 0);
+  --paper: #e4e4e7; /* chrome silver text */
+  --paper-foreground: oklch(0.145 0 0);
+  --hazard: #facc15; /* hazard-tape yellow */
+  --hazard-foreground: oklch(0.145 0 0);
 
   --background: var(--asphalt);
   --foreground: var(--paper);
-  --card: oklch(0.217 0.002 106.6);
+  --card: #121016;
   --card-foreground: var(--paper);
-  --popover: oklch(0.217 0.002 106.6);
+  --popover: #121016;
   --popover-foreground: var(--paper);
-  --primary: oklch(0.948 0.219 117); /* #E5FF00 acid yellow */
-  --primary-foreground: var(--asphalt);
-  --secondary: oklch(0.288 0.004 106.6);
+  --primary: #dc2626; /* crimson */
+  --primary-foreground: #fafafa;
+  --secondary: #1c1824;
   --secondary-foreground: var(--paper);
-  --muted: oklch(0.217 0.002 106.6);
-  --muted-foreground: oklch(0.686 0.01 93.6);
+  --muted: #15121b;
+  --muted-foreground: #a1a1aa;
   --accent: var(--concrete);
   --accent-foreground: var(--paper);
   --destructive: var(--hazard);
   --destructive-foreground: var(--asphalt);
-  --border: oklch(0.953 0.009 84.6 / 18%);
-  --input: oklch(0.953 0.009 84.6 / 22%);
-  --ring: var(--primary);
+  --border: rgb(228 228 231 / 14%);
+  --input: rgb(228 228 231 / 20%);
+  --ring: var(--uv);
 
   --shadow-hard: 4px 4px 0 0 var(--ink);
   --shadow-hard-sm: 2px 2px 0 0 var(--ink);
-  --noise-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --noise-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --noise-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -3 1.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  --mask-stamp: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -7 4.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
-  --gradient-vignette: radial-gradient(
-    ellipse 75% 70% at center,
-    transparent 50%,
-    oklch(0 0 0 / 82%) 100%
-  );
 
   --chart-1: var(--primary);
-  --chart-2: var(--hazard);
+  --chart-2: var(--uv);
   --chart-3: var(--tape);
   --chart-4: var(--paper);
   --chart-5: var(--concrete);
   --sidebar: var(--asphalt);
   --sidebar-foreground: var(--paper);
   --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--asphalt);
+  --sidebar-primary-foreground: #fafafa;
   --sidebar-accent: var(--concrete);
   --sidebar-accent-foreground: var(--paper);
   --sidebar-border: var(--border);
@@ -164,18 +161,17 @@
 
 @utility hud-label {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 @utility pt-safe {
-  padding-top: max(0.75rem, env(safe-area-inset-top));
+  padding-top: max(0.625rem, env(safe-area-inset-top));
 }
 
 @utility pb-safe {
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  padding-bottom: max(0.625rem, env(safe-area-inset-bottom));
 }
 
 @utility px-safe {
@@ -190,189 +186,97 @@
   }
 }
 
-/* ---------- Textures ---------- */
+/* ---------- Futuristic-Graffiti HUD Surfaces ---------- */
 
-/* Dark speckle over a background color (paper, tape, stickers). */
+@utility hud-glass {
+  background-color: rgb(8 8 10 / 78%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgb(139 92 246 / 28%);
+  box-shadow: 0 10px 30px oklch(0 0 0 / 45%);
+}
+
+@utility hud-tag-glow {
+  text-shadow: 0 0 18px rgb(220 38 38 / 55%);
+}
+
 @utility grain {
   background-image: var(--noise-dark);
   background-size: 180px 180px;
 }
 
-/* Light speckle: grip tape / sprayed concrete. */
-@utility grain-light {
-  background-image: var(--noise-light);
-  background-size: 180px 180px;
-}
-
-@utility bg-vignette {
-  background-image: var(--gradient-vignette);
-}
-
-/* VX1000 flip-out LCD: faint horizontal scanlines. */
-@utility vx-lcd {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    oklch(0 0 0 / 22%) 0 1px,
-    transparent 1px 3px
-  );
-}
-
-/* Hand-stamped ink: punches random holes through whatever it is applied to. */
-@utility stamp {
-  -webkit-mask-image: var(--mask-stamp);
-  mask-image: var(--mask-stamp);
-  -webkit-mask-size: 140px 140px;
-  mask-size: 140px 140px;
-}
-
-/* ---------- Shapes & shadows ---------- */
-
-@utility hard-shadow {
-  box-shadow: var(--shadow-hard);
-}
-
-@utility hard-shadow-sm {
-  box-shadow: var(--shadow-hard-sm);
-}
-
-/* Hard shadow that follows clip-paths of children (torn tape, torn paper). */
-@utility drop-hard {
-  filter: drop-shadow(4px 4px 0 var(--ink));
-}
-
 @utility drop-hard-sm {
-  filter: drop-shadow(2px 2px 0 var(--ink));
+  filter: drop-shadow(0 2px 6px oklch(0 0 0 / 70%));
 }
 
-/* Slapped sticker: uneven die-cut corners. */
-@utility sticker-edge {
-  border-radius: 6px 16px 5px 13px / 13px 5px 16px 6px;
-}
-
-/* Duct tape with ragged torn ends. */
-@utility torn-tape {
-  clip-path: polygon(
-    3% 0, 97% 0, 100% 14%, 96.5% 29%, 100% 46%, 97% 62%, 100% 80%, 97.5% 100%,
-    2.5% 100%, 0 84%, 3.5% 67%, 0 50%, 3% 33%, 0 16%
-  );
-}
-
-/* Wheatpaste poster with torn top and bottom edges. */
-@utility torn-paper {
-  clip-path: polygon(
-    0 2%, 6% 0.4%, 12% 2.6%, 19% 0.8%, 27% 2.2%, 35% 0, 44% 1.8%, 52% 0.4%, 61% 2.6%,
-    70% 0.8%, 78% 2.2%, 86% 0, 94% 1.8%, 100% 0.8%, 99.2% 30%, 100% 62%, 99.4% 98%,
-    92% 100%, 84% 97.6%, 75% 99.6%, 66% 97.2%, 57% 100%, 48% 98%, 39% 100%, 30% 97.6%,
-    21% 99.6%, 12% 97.2%, 5% 100%, 0 98%, 0.8% 62%, 0 30%
-  );
-}
-
-/* Alternate tilt for a row of slapped-on pieces. */
-@utility tilt-alt {
-  &:nth-child(odd) {
-    rotate: -1.6deg;
-  }
-  &:nth-child(even) {
-    rotate: 1.3deg;
-  }
-  &:nth-child(3n) {
-    rotate: -0.5deg;
-  }
-}
-
-/* Physical press: piece gets pushed into its shadow. */
 @utility press {
   transition:
-    translate 80ms ease-out,
-    box-shadow 80ms ease-out,
-    background-color 120ms;
+    transform 120ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 150ms cubic-bezier(0.16, 1, 0.3, 1);
   &:active {
-    translate: 2px 2px;
+    transform: scale(0.97);
   }
 }
 
-/* Grip-tape panel: the floating control bar. */
-@utility griptape {
-  background-color: var(--asphalt);
-  background-image: var(--noise-light);
-  background-size: 180px 180px;
-  border: 2px solid var(--ink);
-  border-radius: 10px 18px 8px 16px / 16px 8px 18px 10px;
-  box-shadow: var(--shadow-hard), inset 0 0 0 1px oklch(0.953 0.009 84.6 / 8%);
-}
-
-/* Torn yellow-black hazard warning tape (calibration line). */
+/* Sleek yellow-black hazard warning tape (calibration line). */
 @utility hazard-tape {
-  background-color: var(--primary);
+  background-color: var(--hazard);
   background-image:
-    repeating-linear-gradient(
-      -45deg,
-      oklch(0 0 0 / 82%) 0 9px,
-      transparent 9px 19px
-    ),
+    repeating-linear-gradient(-45deg, oklch(0 0 0 / 85%) 0 8px, transparent 8px 17px),
     var(--noise-dark);
-  background-size: auto, 180px 180px;
+  background-size:
+    auto,
+    180px 180px;
 }
 
-/* Acid-yellow glow behind the ghost deck guide. */
+/* Subtle acid-yellow glow behind the ghost deck guide. */
 @utility ghost-glow {
-  filter: drop-shadow(0 0 7px oklch(0.948 0.219 117 / 50%));
+  filter: drop-shadow(0 0 8px rgb(139 92 246 / 55%));
 }
 
-/* Piece of tape holding a poster to the wall. */
-@utility tape-tab {
-  position: absolute;
-  height: 1.25rem;
-  width: 4.5rem;
-  background-color: oklch(0.72 0.011 92 / 85%);
-  background-image: var(--noise-dark);
-  background-size: 180px 180px;
-  clip-path: polygon(4% 0, 96% 0, 100% 30%, 96% 60%, 100% 100%, 0 100%, 4% 65%, 0 35%);
-}
-
-/* Spray-painted floor grid shown once the surface is calibrated. */
+/* Minimalist floor grid shown once the surface is calibrated. */
 @utility surface-grid {
   background-image:
-    linear-gradient(to right, oklch(0.948 0.219 117 / 55%) 2px, transparent 2px),
-    linear-gradient(to bottom, oklch(0.948 0.219 117 / 55%) 2px, transparent 2px);
+    linear-gradient(to right, rgb(139 92 246 / 30%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(139 92 246 / 30%) 1px, transparent 1px);
   background-size: 56px 56px;
-  filter: blur(0.6px);
   transform: perspective(520px) rotateX(62deg);
   transform-origin: center bottom;
-  mask-image: linear-gradient(to top, black 20%, transparent 95%);
+  mask-image: linear-gradient(to top, black 12%, transparent 88%);
 }
 
 @keyframes scan {
   0% {
-    top: 8%;
+    top: 10%;
     opacity: 0;
   }
-  10% {
+  12% {
     opacity: 1;
   }
-  90% {
+  88% {
     opacity: 1;
   }
   100% {
-    top: 92%;
+    top: 90%;
     opacity: 0;
   }
 }
 
-/* The scanning hazard-tape strip rides just above the scan line. */
 @keyframes scan-tape {
   0% {
-    top: calc(8% - 1.25rem);
+    top: calc(10% - 0.75rem);
     opacity: 0;
   }
-  10% {
+  12% {
     opacity: 1;
   }
-  90% {
+  88% {
     opacity: 1;
   }
   100% {
-    top: calc(92% - 1.25rem);
+    top: calc(90% - 0.75rem);
     opacity: 0;
   }
 }
@@ -383,23 +287,133 @@
     opacity: 1;
   }
   50% {
-    opacity: 0;
+    opacity: 0.25;
   }
 }
 
 @keyframes slap {
   from {
     opacity: 0;
-    transform: scale(1.12) rotate(-4deg);
+    transform: scale(0.96) translateY(6px);
   }
   to {
     opacity: 1;
-    transform: scale(1) rotate(0);
+    transform: scale(1) translateY(0);
   }
 }
 
 @keyframes dash {
   to {
     stroke-dashoffset: -20;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ---------- Y2K Cyber-Gothic: home screen & no-cam brick spot ---------- */
+
+/* Weathered dark brick wall: staggered bricks from gradients, no image assets. */
+@utility brick-wall {
+  background-color: #14100f;
+  background-image:
+    linear-gradient(to bottom, rgb(8 8 10 / 0%) 55%, rgb(8 8 10 / 85%) 100%),
+    repeating-linear-gradient(to bottom, transparent 0 27px, rgb(0 0 0 / 70%) 27px 30px),
+    repeating-linear-gradient(to right, transparent 0 69px, rgb(0 0 0 / 60%) 69px 72px),
+    linear-gradient(115deg, #231815 0%, #181212 45%, #1f1618 100%);
+  background-size:
+    auto,
+    100% 30px,
+    72px 60px,
+    auto;
+}
+
+/* Alternate-row brick offset overlay */
+@utility brick-offset {
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0 33px,
+    rgb(0 0 0 / 55%) 33px 36px
+  );
+  background-size: 72px 60px;
+  mask-image: repeating-linear-gradient(to bottom, transparent 0 30px, black 30px 60px);
+  -webkit-mask-image: repeating-linear-gradient(to bottom, transparent 0 30px, black 30px 60px);
+}
+
+/* UV / crimson light pools washing the wall */
+@utility spot-light {
+  background-image:
+    radial-gradient(60% 45% at 18% 12%, rgb(139 92 246 / 34%), transparent 70%),
+    radial-gradient(55% 40% at 88% 30%, rgb(220 38 38 / 26%), transparent 70%),
+    radial-gradient(70% 30% at 50% 100%, rgb(139 92 246 / 18%), transparent 70%);
+}
+
+/* Liquid chrome lettering for graffiti tags */
+@utility chrome-text {
+  background-image: linear-gradient(
+    180deg,
+    #fafafa 0%,
+    #e4e4e7 28%,
+    #71717a 48%,
+    #d4d4d8 56%,
+    #ffffff 72%,
+    #8b5cf6 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(8 8 10 / 90%);
+  filter: drop-shadow(0 0 14px rgb(139 92 246 / 55%)) drop-shadow(0 3px 0 rgb(220 38 38 / 70%));
+}
+
+/* Animated film grain, kept quiet */
+@utility film-grain {
+  background-image: var(--noise-dark);
+  background-size: 180px 180px;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  animation: grain 0.9s steps(4) infinite;
+}
+
+/* Windows-98 bevel for the dock bar */
+@utility bevel-98 {
+  border: 2px solid;
+  border-color: #e4e4e7 #3f3f46 #3f3f46 #e4e4e7;
+  background-color: #a1a1aa;
+}
+
+@keyframes grain {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: -40px 22px;
+  }
+  50% {
+    background-position: 30px -35px;
+  }
+  75% {
+    background-position: -18px -12px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes drip {
+  0%,
+  100% {
+    transform: scaleY(0.82);
+  }
+  50% {
+    transform: scaleY(1);
   }
 }

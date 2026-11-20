@@ -44,9 +44,10 @@ export function buildVideoConstraints({
 export type CameraErrorKind = "denied" | "not-found" | "in-use" | "unsupported" | "unknown";
 
 export function classifyCameraError(err: unknown): CameraErrorKind {
-  const name = err instanceof Error || (err && typeof err === "object" && "name" in err)
-    ? String((err as { name: unknown }).name)
-    : "";
+  const name =
+    err instanceof Error || (err && typeof err === "object" && "name" in err)
+      ? String((err as { name: unknown }).name)
+      : "";
   switch (name) {
     case "NotAllowedError":
     case "SecurityError":

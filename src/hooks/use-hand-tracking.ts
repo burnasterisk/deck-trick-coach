@@ -2,12 +2,15 @@ import { useEffect, useRef, useState } from "react";
 
 import type { HandLandmarker } from "@mediapipe/tasks-vision";
 
+import type { HandBoardLandmarks } from "@/lib/board-calibration";
+import { extractHandKinematics, type HandKinematics } from "@/lib/hand-kinematics";
 import { createHandLandmarker, type HandTrackingStatus } from "@/lib/hand-tracking";
+import type { Tips } from "@/lib/trick-analyzer";
 
 /**
  * Loads the hand landmarker once and runs detection on the live video each
- * animation frame, reporting index (8) and middle (12) fingertip positions in
- * [0..1] video space so the overlay can map them onto the canvas.
+ * animation frame, reporting fingertips (8, 12), board-calibration landmarks
+ * (5, 8, 9, 12), and full hand kinematics (wrist rotation + finger curl).
  */
 export function useHandTracking(
   videoRef: React.RefObject<HTMLVideoElement | null>,
@@ -18,14 +21,16 @@ export function useHandTracking(
   const rafRef = useRef(0);
   const lastTsRef = useRef(-1);
   const [status, setStatus] = useState<HandTrackingStatus>("idle");
-  const [tips, setTips] = useState<{ index: { x: number; y: number }; middle: { x: number; y: number } } | null>(
-    null,
-  );
+  const [tips, setTips] = useState<Tips | null>(null);
+  const [handPose, setHandPose] = useState<HandBoardLandmarks | null>(null);
+  const [kinematics, setKinematics] = useState<HandKinematics | null>(null);
 
   useEffect(() => {
     if (!enabled || !live) {
       setStatus("idle");
       setTips(null);
+      setHandPose(null);
+      setKinematics(null);
       return;
     }
     let cancelled = false;
@@ -68,16 +73,36 @@ export function useHandTracking(
       try {
         const result = landmarker.detectForVideo(video, ts);
         const hand = result.landmarks[0];
-        if (!hand) {
+        const lm5 = hand?.[5];
+        const lm8 = hand?.[8];
+        const lm9 = hand?.[9];
+        const lm12 = hand?.[12];
+
+        if (!hand || !lm5 || !lm8 || !lm9 || !lm12) {
           setTips(null);
+          setHandPose(null);
+          setKinematics(null);
           return;
         }
+
+        const indexTip = { x: lm8.x, y: lm8.y };
+        const middleTip = { x: lm12.x, y: lm12.y };
+
         setTips({
-          index: { x: hand[8].x, y: hand[8].y },
-          middle: { x: hand[12].x, y: hand[12].y },
+          index: indexTip,
+          middle: middleTip,
         });
+        setHandPose({
+          indexMcp: { x: lm5.x, y: lm5.y },
+          indexTip,
+          middleMcp: { x: lm9.x, y: lm9.y },
+          middleTip,
+        });
+        setKinematics(extractHandKinematics(hand, false));
       } catch {
         setTips(null);
+        setHandPose(null);
+        setKinematics(null);
       }
     };
 
@@ -85,5 +110,5 @@ export function useHandTracking(
     return () => cancelAnimationFrame(rafRef.current);
   }, [status, videoRef]);
 
-  return { status, tips };
+  return { status, tips, handPose, kinematics };
 }

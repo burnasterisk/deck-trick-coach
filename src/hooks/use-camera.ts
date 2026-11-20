@@ -20,7 +20,7 @@ export interface CameraInfo {
   mirrored: boolean;
 }
 
-export function useCamera() {
+export function useCamera(enabled = true) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const requestId = useRef(0);
@@ -46,6 +46,14 @@ export function useCamera() {
   useEffect(() => {
     if (!request) return;
     const id = ++requestId.current;
+    // Camera stays off (and un-prompted) until the skater actually enters a session.
+    if (!enabled) {
+      stop();
+      setStatus("idle");
+      setError(null);
+      setInfo(null);
+      return;
+    }
 
     async function start(req: CameraRequest) {
       if (!navigator.mediaDevices?.getUserMedia) {
@@ -113,7 +121,7 @@ export function useCamera() {
     }
 
     void start(request);
-  }, [request, stop]);
+  }, [request, stop, enabled]);
 
   useEffect(() => stop, [stop]);
 
